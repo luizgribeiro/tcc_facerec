@@ -1,0 +1,8 @@
+lib64
+share/
+**/__pycache__
+pyenv.cfg
+bin
+.vscode
+lib/
+include/
