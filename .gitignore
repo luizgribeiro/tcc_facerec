@@ -6,3 +6,4 @@ bin
 .vscode
 lib/
 include/
+src/controllers/configs
