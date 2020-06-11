@@ -5,7 +5,7 @@ import logging
 
 class WebcamController:
 
-    def __init__(self, video_source=0):
+    def __init__(self, video_source=0, face_detector=FaceDetector(), face_finder=FaceFinder()):
 
         self.vid = cv2.VideoCapture(video_source)
 
@@ -16,8 +16,8 @@ class WebcamController:
             logging.error("Unable to open video source")
             raise ValueError("Unable to open video source", video_source)
     
-        self.face_finder = FaceFinder()
-        self.face_detector = FaceDetector()
+        self.face_finder = face_finder 
+        self.face_detector = face_detector
 
     def get_width(self):
         return self._width
@@ -56,7 +56,7 @@ class WebcamController:
         try:
             ret, frame = self.vid.read()
             face_locations, face_encodings = self.face_finder.find_faces(frame)
-            print(type(face_locations))
+ 
             if ret:
                 #detecting faces
                 if face_locations != None:
@@ -67,12 +67,49 @@ class WebcamController:
                     detected_frame = self.rescale_detected_faces(face_locations, 
                                                                 detected_faces,
                                                                 frame)
-                    return (ret, self.convert_frame(detected_frame))
+                    return (ret, detected_frame)
                 else:
-                    return (ret, self.convert_frame(frame))
+                    return (ret, frame)
             else:
                 return (ret, None)
         except Exception as e:
                 raise e
             
-            
+    def gen_jpg_from_frame(self, lock):
+
+        while True:
+            lock.acquire()
+
+            ret, frame = self.get_processed_frame()
+
+            lock.release()
+
+            if frame is  None:
+                return (ret, None)
+            else:
+                (flag, encodedImage) = cv2.imencode(".jpg", frame)
+
+                if not flag:
+                    return (ret, None)
+                
+  
+            yield b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + bytearray(encodedImage) + b'\r\n'
+     
+
+
+    def get_face_encodings(self, lock):
+        lock.acquire()
+
+        ret, frame = self.vid.read()
+
+        lock.release()
+
+        if ret is None:
+            return None 
+        else:
+            face_locations, face_encodings = self.face_finder.find_faces(frame)
+
+        if face_encodings is None:
+            return None 
+        else:
+            return face_encodings
