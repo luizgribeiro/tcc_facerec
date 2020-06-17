@@ -5,7 +5,7 @@ import logging
 
 class WebcamController:
 
-    def __init__(self, video_source=0, face_detector=FaceDetector(), face_finder=FaceFinder()):
+    def __init__(self, face_detector, face_finder, video_source=0):
 
         self.vid = cv2.VideoCapture(video_source)
 
