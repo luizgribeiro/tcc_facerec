@@ -1,11 +1,13 @@
 import face_recognition as face_rec 
 import numpy as np
+from datetime import datetime
 
 class FaceDetector:
 
-    def __init__(self):
+    def __init__(self, face_list_cont, attend_cont):
         self.students_descs = {}
-        self.detected_faces = []
+        self.face_list_cont = face_list_cont
+        self.attend_cont = attend_cont
         
 
     def update_known_faces(self, db_student_data):
@@ -27,9 +29,6 @@ class FaceDetector:
         for i in range(len(first_name)):
             self.students_descs[list_id[i]] = face_descs[i]
 
-    def print_known_faces(self):
-        print(self.students_descs)
-
     def detect_faces(self, face_encoding):
 
         name = "Unkown"
@@ -45,4 +44,16 @@ class FaceDetector:
             if matches[best_match_index]:
                 name = all_student_ids[best_match_index]
 
+        #updating detections locally and on db
+        if name != "Unkown":
+            print(f"############{name}###########")
+            print(f"############{self.face_list_cont.get_detected_faces()}#########")
+            if name not in self.face_list_cont.get_detected_faces():
+                print("Entrou nas presenças")
+                matricula = name.split()[0]
+                self.attend_cont.add_attendance({ 'matricula': matricula,
+                                                  'data_hora': datetime.now()
+                                                })
+            self.face_list_cont.add_face(name)
+        
         return name
