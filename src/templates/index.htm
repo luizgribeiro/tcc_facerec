@@ -30,75 +30,13 @@
         <div class="d-flex justify-content-center video-container px-2 ">
             <img class="" src="{{ url_for('video_feed') }}">    
         </div>
-        <div class="attendance-list overflow-auto">
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                <a class="nav-link active" href="#">Active</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Cadastro de alunos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Cadastro de alunos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Cadastro de alunos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Cadastro de alunos</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Cadastro de alunos</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#">Cadastro de alunos</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">Cadastro de alunos</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="#">Cadastro de alunos</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" href="#">Cadastro de alunos</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="#">Cadastro de alunos</a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a class="nav-link" href="#">Cadastro de alunos</a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" href="#">Cadastro de alunos</a>
-                                                                </li>
-                                                                <li class="nav-item">
-                                                                    <a class="nav-link" href="#">Cadastro de alunos</a>
-                                                                    </li>
-                                                                    <li class="nav-item">
-                                                                        <a class="nav-link" href="#">Cadastro de alunos</a>
-                                                                        </li>
-                                                                        <li class="nav-item">
-                                                                            <a class="nav-link" href="#">Cadastro de alunos</a>
-                                                                            </li>
-                                                                            <li class="nav-item">
-                                                                                <a class="nav-link" href="#">Cadastro de alunos</a>
-                                                                                </li>
-                                                                                <li class="nav-item">
-                                                                                    <a class="nav-link" href="#">Cadastro de alunos</a>
-                                                                                    </li>
-                                                                                    <li class="nav-item">
-                                                                                        <a class="nav-link" href="#">Cadastro de alunos</a>
-                                                                                        </li>
-            </ul>
+        <div class="attendance-container">
+            <p class="text-light text-center border"><strong>Lista de presenças</strong></p>
+            <div class="attendance-list overflow-auto border-left border-light px-3">
+                <ul class="nav flex-column " id="lista-presentes">
+
+                </ul>
+            </div>
         </div>
     </main>
     <!-- JS, Popper.js, and jQuery -->
@@ -106,12 +44,6 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
-<script type="text/javascript" charset="utf-8">
-    var socket = io();
-    socket.on('connect', function() {
-        socket.emit('my event', {data: 'I\'m connected!'});
-    });
-    socket.on("respondi ao chamado!", () => {console.log("Recebi uma mensagem supimpa!")});
-</script>
+<script src= "{{ url_for('static',filename='scripts/attendanceUpdate.js') }}"></script>
 </body>
 </html>
