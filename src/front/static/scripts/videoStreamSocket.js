@@ -7,9 +7,9 @@ class FrameSender {
   }
 
   startFrameStream() {
-    setInterval( ()=> {
-      this._ioSocket.emit('raw_frame', this.generateFrame())
-    }, 10); //ms difining framerate
+   setInterval( ()=> {
+      this._ioSocket.emit('raw_frame', JSON.stringify(this.generateFrame()))
+    }, 1000); //ms defining framerate 
   }
 
   generateFrame() {
@@ -18,7 +18,7 @@ class FrameSender {
       this.screenShoter.getContext("2d").drawImage(this.video, 0, 0);
       
       
-      return this.screenShoter.toDataURL("image/jpg");
+      return { image_data: this.screenShoter.toDataURL("image/jpg") };
     };
   }
 
