@@ -46,10 +46,9 @@ class FaceDetector:
 
         #updating detections locally and on db
         if name != "Unkown":
-            print(f"############{name}###########")
-            print(f"############{self.face_list_cont.get_detected_faces()}#########")
+            
             if name not in self.face_list_cont.get_detected_faces():
-                print("Entrou nas presenças")
+            
                 matricula = name.split()[0]
                 self.attend_cont.add_attendance({ 'matricula': matricula,
                                                   'data_hora': datetime.now()

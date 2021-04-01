@@ -1,6 +1,6 @@
 class FaceListController:
 
-    def __init__(self, app):
+    def __init__(self):
         self.detected_faces = []
         self.total_detected = 0
 

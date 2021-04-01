@@ -4,12 +4,24 @@ class FrameSender {
     this.video = document.querySelector('video');
     this.screenShoter = document.createElement('canvas');
     enableVideoStream();
+    this.setSocketHander();
   }
 
-  startFrameStream() {
-   setInterval( ()=> {
-      this._ioSocket.emit('raw_frame', JSON.stringify(this.generateFrame()))
-    }, 1000); //ms defining framerate 
+  setSocketHander() {
+    this._ioSocket.on('processed_frame', (procFrame)=>{
+      this.sendFrame();
+      const enc = new TextDecoder("utf-8");
+      const frameB64String = enc.decode(procFrame.data);
+      document.getElementById("ItemPreview").src = `data:image/jpeg;charset=utf-8;base64,${frameB64String}`;
+    });
+
+    this._ioSocket.on('broken_frame', (procFrame)=>{
+      this.sendFrame();
+    });
+  }
+
+  sendFrame() {
+    this._ioSocket.emit('raw_frame', JSON.stringify(this.generateFrame()));
   }
 
   generateFrame() {
@@ -22,7 +34,6 @@ class FrameSender {
     };
   }
 
-  
   //abre conexão websocket
   //de tempos em tempos "tira print" do vídeo
   //envia imagem via socket
