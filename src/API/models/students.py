@@ -6,7 +6,6 @@ class Student(MongoModel):
     email = fields.EmailField(verbose_name="email", mongo_name="email")
     full_name = fields.CharField(verbose_name="nome completo", mongo_name="nome")
     face_encodings = fields.ListField(verbose_name="face encodings", mongo_name="face_encodings")
-    #TODO: add creation date
 
     class Meta:
         collection_name = 'student'
