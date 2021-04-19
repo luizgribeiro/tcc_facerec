@@ -1,8 +1,9 @@
+from models.attendance import Attendance
 
 class AttendanceController:
 
-    def __init__(self, db_attendances):
-        self.db_attendances = db_attendances
+    def __init__(self):
+        self.db_attendances = Attendance
 
 
     def fetch_attendances(self):

@@ -4,17 +4,22 @@ from datetime import datetime
 
 class FaceDetector:
 
-    def __init__(self, face_list_cont, attend_cont):
+    def __init__(self, face_list_cont, attend_cont, students_cont):
         self.students_descs = {}
         self.face_list_cont = face_list_cont
         self.attend_cont = attend_cont
+        self.students_cont = students_cont;
         
 
-    def update_known_faces(self, db_student_data):
+    def update_known_faces(self):
 
-        first_name = [ name.split()[0] for name in db_student_data.get_student_names() ]
-        students_ids = [ identification for identification in db_student_data.get_student_ids()]
-        face_descs = [ np.array(desc) for desc in db_student_data.get_student_facedesc() ]
+        query_names = self.students_cont.get_student_names()
+
+        print(query_names)
+        
+        first_name = [ name.split()[0] for name in query_names ]
+        students_ids = [ identification for identification in self.students_cont.get_student_ids()]
+        face_descs = [ np.array(desc) for desc in self.students_cont.get_student_facedesc() ]
 
 
         if len(first_name) == len(students_ids) and len(first_name) == len(face_descs):

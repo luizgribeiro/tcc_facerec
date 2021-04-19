@@ -1,8 +1,10 @@
+from models.students import Student
+
 
 class StudentsController:
 
-    def __init__(self, db_students):
-        self.db_students = db_students 
+    def __init__(self):
+        self.db_students = Student
 
 
     def fetch_students_info(self):
