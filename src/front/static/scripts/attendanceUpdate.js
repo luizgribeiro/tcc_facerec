@@ -1,5 +1,3 @@
-
-
 function getAttendanceList() {
     let attendanceList = document.querySelector('#lista-presentes');
     let listItems = attendanceList.querySelectorAll('li');

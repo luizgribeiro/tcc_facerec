@@ -15,11 +15,9 @@ import json
 import time
 
 
-
-
 class VideoRoute:
 
-  def __init__(self, frame_cont, socketio):
+  def __init__(self, frame_cont , socketio):
     self.frame_cont = frame_cont
     self.socketio = socketio 
     self.add_websocket_route(socketio)
@@ -58,9 +56,3 @@ class VideoRoute:
     except Exception as e:
       print(e)
       self.socketio.emit('broken_frame')
-
-
-
-
-
-

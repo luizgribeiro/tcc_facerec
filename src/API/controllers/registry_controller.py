@@ -1,13 +1,11 @@
 class RegistryController:
 
     def __init__(self, student_controller):
-        #dependency injection: needs student from DB to add registry
         self.student_controller = student_controller
 
 
     def add_registry(self, student_data, face_descriptors):
 
-        
         if self.validate_info(student_data):
             self.student_controller.add_student(student_data, face_descriptors)
             return True
@@ -26,7 +24,7 @@ class RegistryController:
 
         if (student_data['matricula'] in student_ids 
             or student_data['email'] in student_emails):
-            return False
+            return "already registred"
         else:
-            return True
+            return "valid"
 
