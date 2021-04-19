@@ -7,3 +7,5 @@ bin
 lib/
 include/
 src/controllers/configs
+.env
+mongo.env 
