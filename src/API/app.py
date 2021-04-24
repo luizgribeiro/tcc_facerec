@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Api
 from flask_socketio import SocketIO
 from flask_cors import CORS

@@ -30,6 +30,7 @@ class FrameSender {
       this.screenShoter.getContext("2d").drawImage(this.video, 0, 0);
       
       
-      return { image_data: this.screenShoter.toDataURL("image/jpg") };
-    };
+      return { image_data: this.screenShoter.toDataURL("image/jpg"),
+        socket_id : this._ioSocket.id};
+    }
   }
