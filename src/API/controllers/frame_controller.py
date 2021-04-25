@@ -31,7 +31,7 @@ class FrameController:
             else:
                 cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 255, 0), cv2.FILLED)
             font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+            cv2.putText(frame, name.split('-')[1], (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
         return frame
 
@@ -41,20 +41,16 @@ class FrameController:
         try:
             face_locations, face_encodings = self.face_finder.find_faces(frame)
  
-            #detecting faces
             if face_locations != None:
-                detected_faces = []
-                for encoding in face_encodings:
-                    detected_faces.append(self.face_detector.detect_faces(encoding))
-                            
-                    detected_frame = self.rescale_detected_faces(face_locations, 
-                                                                detected_faces,
-                                                                frame)
-                else:
-                        return frame
-                return detected_frame
+                detected_faces = [self.face_detector.detect_faces(f_enc) for f_enc in face_encodings]
+                processed_frame = self.rescale_detected_faces(face_locations,
+                                                              detected_faces,
+                                                              frame
+                                                            )
+                return processed_frame, detected_faces
+
             else:
-                return frame
+                return frame, None
         except Exception as e:
                 raise e
       
