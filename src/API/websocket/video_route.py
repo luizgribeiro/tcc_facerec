@@ -47,12 +47,14 @@ class VideoRoute:
       start = time.time()
       frame = self.request_to_frame(request)
 
-      processed_frame = self.frame_cont.process_frame(frame)
+      processed_frame, detected_faces = self.frame_cont.process_frame(frame)
 
       img_encoded_string = self.frame_cont.gen_jpg_string_from_frame(processed_frame)
       img_string_b64 = base64.encodestring(img_encoded_string)
 
       emit('processed_frame', {'data': img_string_b64}, room=sid)
+      if len(detected_faces):
+        emit('update_list', {"faces": detected_faces}, room=sid )
       end = time.time()
       print(f'[INFO]: Tempo total {end-start}')
     except Exception as e:
