@@ -9,18 +9,9 @@ function getAttendanceList() {
     return students;
 }
 
-function attendanceUpdate() {
-    var socket = io();
+const attendanceUpdate = (socket ) => {
 
-    socket.on('connect', function() {
-        setInterval(()=>{
-            socket.emit('update_atendences');
-        }, 1000);
-        
-    });
-
-    socket.on("updated_list", (data)=> {
-        
+    socket.on("update_list", (data)=> {
         newlyDetected = [];
         currentStudents = getAttendanceList();
 
@@ -36,9 +27,7 @@ function attendanceUpdate() {
             student.classList.add("text-light");
             attendanceList.appendChild(student);
         }
-    });
-
-    
+    });   
 }
 
 attendanceUpdate();
