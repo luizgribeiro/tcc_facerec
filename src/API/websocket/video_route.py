@@ -4,6 +4,7 @@ from flask import Flask, jsonify
 from flask import request 
 import cv2 
 import io
+from flask_socketio import send, emit
 from PIL import Image
 from datetime import datetime
 import base64
@@ -20,7 +21,7 @@ class VideoRoute:
   def __init__(self, frame_cont , socketio):
     self.frame_cont = frame_cont
     self.socketio = socketio 
-    self.add_websocket_route(socketio)
+    self.add_websocket_route()
 
 
   def request_to_frame(self, request):
@@ -36,23 +37,26 @@ class VideoRoute:
 
     return frame
 
-  def add_websocket_route(self, socketio):
-    socketio.on_event('raw_frame', self.handle_frame)
+  def add_websocket_route(self):
+    self.socketio.on_event('raw_frame', self.handle_frame)
 
 
   def handle_frame(self, request):
     try:
+      sid = json.loads(request)['socket_id']
       start = time.time()
       frame = self.request_to_frame(request)
 
-      processed_frame = self.frame_cont.process_frame(frame)
+      processed_frame, detected_faces = self.frame_cont.process_frame(frame)
 
       img_encoded_string = self.frame_cont.gen_jpg_string_from_frame(processed_frame)
       img_string_b64 = base64.encodestring(img_encoded_string)
 
-      self.socketio.emit('processed_frame', {'data': img_string_b64} )
+      emit('processed_frame', {'data': img_string_b64}, room=sid)
+      if len(detected_faces):
+        emit('update_list', {"faces": detected_faces}, room=sid )
       end = time.time()
       print(f'[INFO]: Tempo total {end-start}')
     except Exception as e:
       print(e)
-      self.socketio.emit('broken_frame')
+      emit('broken_frame', room=sid)
