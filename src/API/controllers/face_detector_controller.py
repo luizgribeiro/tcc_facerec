@@ -33,7 +33,7 @@ class FaceDetector:
 
     def detect_faces(self, face_encoding):
 
-        student_desc = "Unkown"
+        student_desc = "Unknown"
 
         all_face_encodings = [ enc for enc in self.students_descs.values()]
         all_student_ids = [ident for ident in self.students_descs.keys()]
@@ -46,7 +46,7 @@ class FaceDetector:
                 student_desc = all_student_ids[best_match_index]
 
         #updating detections locally and on db
-        if student_desc != "Unkown":
+        if student_desc != "Unknown":
             
             if student_desc not in self.face_list_cont.get_detected_faces():
                 matricula = student_desc.split('-')[0]
