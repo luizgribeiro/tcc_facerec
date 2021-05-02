@@ -13,7 +13,20 @@ from PIL import Image
 import numpy as np 
 import face_recognition
 import json
-import time
+import logging
+import csv
+import time 
+import sys
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+file_handler = logging.FileHandler('./detection_log.csv')
+file_handler.setLevel(logging.DEBUG)
+
+formater = logging.Formatter('%(message)s')
+file_handler.setFormatter(formater)
+
+logger.addHandler(file_handler)
 
 
 class VideoRoute:
@@ -42,9 +55,9 @@ class VideoRoute:
 
 
   def handle_frame(self, request):
+    start = time.time()
     try:
       sid = json.loads(request)['socket_id']
-      start = time.time()
       frame = self.request_to_frame(request)
 
       processed_frame, detected_faces = self.frame_cont.process_frame(frame)
@@ -53,10 +66,17 @@ class VideoRoute:
       img_string_b64 = base64.encodestring(img_encoded_string)
 
       emit('processed_frame', {'data': img_string_b64}, room=sid)
-      if len(detected_faces):
+
+      if detected_faces is None:
+        n_faces = 0
+      else:
+        n_faces = len(detected_faces)
+
+      if n_faces:
         emit('update_list', {"faces": detected_faces}, room=sid )
+      
       end = time.time()
-      print(f'[INFO]: Tempo total {end-start}')
+      logger.debug(f'{sid},{end - start},{n_faces},{start},{end}')
     except Exception as e:
       print(e)
       emit('broken_frame', room=sid)
