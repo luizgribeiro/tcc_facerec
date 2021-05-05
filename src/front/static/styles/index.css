@@ -1,7 +1,11 @@
-
+nav {
+    padding-right: 15% !important;
+    padding-left: 15% !important;
+}
 
 .video-container {
     width: 80%;
+    height: auto;
 }
 
 .attendance-container {
@@ -14,3 +18,9 @@
 .video-stream {
     display: none;
 }
+
+.main {
+    margin-left: 15% !important;
+    margin-right: 15% !important;
+}
+
