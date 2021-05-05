@@ -18,17 +18,6 @@ import csv
 import time 
 import sys
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-file_handler = logging.FileHandler('./detection_log.csv')
-file_handler.setLevel(logging.DEBUG)
-
-formater = logging.Formatter('%(message)s')
-file_handler.setFormatter(formater)
-
-logger.addHandler(file_handler)
-
-
 class VideoRoute:
 
   def __init__(self, frame_cont , socketio):
@@ -75,8 +64,6 @@ class VideoRoute:
       if n_faces:
         emit('update_list', {"faces": detected_faces}, room=sid )
       
-      end = time.time()
-      logger.debug(f'{sid},{end - start},{n_faces},{start},{end}')
     except Exception as e:
       print(e)
       emit('broken_frame', room=sid)
