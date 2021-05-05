@@ -29,6 +29,3 @@ const attendanceUpdate = (socket ) => {
         }
     });   
 }
-
-attendanceUpdate();
-
