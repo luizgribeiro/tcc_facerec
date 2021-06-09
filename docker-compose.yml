@@ -1,11 +1,49 @@
 version: "3"
-
 services:
+  proxy:
+    image: traefik:v2.4.8
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+      - "27017:27017"
+    volumes:
+      - ./traefik.yml:/etc/traefik/traefik.yml 
+      - /var/run/docker.sock:/var/run/docker.sock:ro
   mongo:
     image: mongo:latest
-    ports:
-      - "127.0.0.1:27017:27017"
     volumes:
       - ./database:/data/db 
     env_file: 
       - mongo.env 
+    labels:
+      - "traefik.tcp.routers.mongodb.entrypoints=mongo"
+      - "traefik.tcp.routers.mongodb.rule=HostSNI(`*`)"
+      - "traefik.tcp.services.mongodb.loadbalancer.server.port=27017"
+  webserver:
+    image: nginx:1.21.0
+    volumes:
+      - ./src/front/:/usr/share/nginx/html/app:ro #modificar estrutura de pastas
+    labels:
+      - "traefik.http.routers.webserver.entrypoints=websecure"
+      - "traefik.http.routers.webserver.rule=PathPrefix(`/app`)"
+      - "traefik.http.routers.webserver.tls=true"
+      - "traefik.http.services.webserver.loadbalancer.server.port=80"
+  facerecapi:
+    tty: true
+    build: 
+      context: ./src/API
+      dockerfile: ./Dockerfile
+    labels:
+      - "traefik.http.routers.facerecapi.entrypoints=websecure"
+      - "traefik.http.routers.facerecapi.rule=PathPrefix(`/apifacerec`)"
+      - "traefik.http.middlewares.stripapiprefix.stripprefix.prefixes=/apifacerec"
+      - "traefik.http.middlewares.stripapiprefix.stripprefix.forceslash=true"
+      - "traefik.http.routers.facerecapi.middlewares=stripapiprefix@docker"
+      - "traefik.http.routers.facerecapi.tls=true"
+      - "traefik.http.services.facerecapi.loadbalancer.server.port=5000"
+      - "traefik.http.services.facerecapi.loadbalancer.sticky=true"
+      - "traefik.http.services.facerecapi.loadbalancer.sticky.cookie.name=StickyCookie"
+      - "traefik.http.services.facerecapi.loadbalancer.sticky.cookie.secure=true"
+    links: 
+      - mongo
