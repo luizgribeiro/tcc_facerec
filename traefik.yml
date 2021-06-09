@@ -1,0 +1,17 @@
+## traefik.yml
+# Docker configuration backend
+providers:
+  docker:
+    defaultRule: "Host(`{{ trimPrefix `/` .Name }}.docker.localhost`)"
+
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+  mongo:
+    address: ":27017"
+
+# API and dashboard configuration
+api:
+  insecure: true

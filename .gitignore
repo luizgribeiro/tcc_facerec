@@ -8,4 +8,5 @@ lib/
 include/
 src/controllers/configs
 .env
-mongo.env 
+mongo.env
+database/
