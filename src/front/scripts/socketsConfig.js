@@ -1,4 +1,4 @@
-const socket = io('http://localhost:5000');
+const socket = io('woody', {path:'/apifacerec/socket.io'});
 
 socket.on('connect', ()=> {
   console.log("Conexão websocket estabelecida");

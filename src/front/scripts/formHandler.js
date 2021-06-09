@@ -26,7 +26,7 @@ formBtn.addEventListener("click", function(event) {
     }
 
 
-    const endPoint = "http://woody:5000/student_registry"   
+    const endPoint = "/apifacerec/student_registry"   
     //TODO: modificar para rota de API
     const options = {
         method: "POST",
