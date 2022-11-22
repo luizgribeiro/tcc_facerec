@@ -17,7 +17,7 @@ mongomock==3.19.0
 more-itertools==8.3.0
 opencv-python==4.2.0.34
 packaging==20.4
-Pillow==7.1.2
+Pillow==9.3.0
 pluggy==0.13.1
 py==1.8.1
 pymodm==0.4.3
